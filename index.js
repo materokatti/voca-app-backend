@@ -1,8 +1,8 @@
-const { createServer } = require("http");
-const { createReadStream } = require("fs");
+const {createServer} = require("http");
+const {createReadStream} = require("fs");
 
 const sendFile = (res, status, type, file) => {
-  res.writeHead(status, { "Content-Type": type });
+  res.writeHead(status, {"Content-Type": type});
   createReadStream(file).pipe(res);
 };
 
@@ -17,4 +17,6 @@ createServer((req, res) => {
     default:
       return sendFile(res, 404, "text/html", "./client/404.html");
   }
-}).listen(3000, () => console.log("Server running - 3000"));
+}).listen(3000, () =>
+  console.log("Server running - 3000 \n http://localhost:3000")
+);
