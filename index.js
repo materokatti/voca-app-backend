@@ -9,12 +9,12 @@ const sendFile = (res, status, type, file) => {
 createServer((req, res) => {
   switch (req.url) {
     case "/":
-      return sendFile(res, 200, "text/html", "./index.html");
+      return sendFile(res, 200, "text/html", "./client/index.html");
     case "/index.js":
       return sendFile(res, 200, "text/javascript", "./index.js");
     case "/style.css":
-      return sendFile(res, 200, "text/css", "./css/style.css");
+      return sendFile(res, 200, "text/css", "./client/css/style.css");
     default:
-      return sendFile(res, 404, "text/html", "./404.html");
+      return sendFile(res, 404, "text/html", "./client/404.html");
   }
 }).listen(3000, () => console.log("Server running - 3000"));
