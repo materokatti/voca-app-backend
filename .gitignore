@@ -1,0 +1,12 @@
+# 종속성 디렉토리
+/node_modules
+
+# 로그 파일
+*.log
+
+# 환경 설정 파일
+.env
+
+# 기타 불필요한 파일
+.DS_Store
+Thumbs.db
