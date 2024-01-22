@@ -9,4 +9,8 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 app.use("/", express.static(path.join(__dirname, "client")));
 
+app.use((req, res) => {
+  res.status(404).sendFile(path.join(__dirname, "client", "404.html"));
+});
+
 app.listen(3000, () => console.log("Server running - 3000"));
