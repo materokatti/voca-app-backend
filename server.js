@@ -1,8 +1,8 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
-import { fileURLToPath } from "url";
-import { google } from "googleapis";
+import {fileURLToPath} from "url";
+import {google} from "googleapis";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -18,7 +18,7 @@ const auth = new google.auth.GoogleAuth({
   scopes: ["https://www.googleapis.com/auth/spreadsheets"],
 });
 
-const sheets = google.sheets({ version: "v4", auth });
+const sheets = google.sheets({version: "v4", auth});
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -33,11 +33,11 @@ app.post("/add", (req, res) => {
   const isExist = vocaData.find((voca) => voca.spanish === newVoca.spanish);
 
   if (isExist) {
-    res.status(409).send({ message: "Already Exist" });
+    res.status(409).send({message: "Already Exist"});
   } else {
     vocaData.push(newVoca);
     fs.writeFileSync(vocaDataFile, JSON.stringify(vocaData));
-    res.status(201).send({ message: "Success" });
+    res.status(201).send({message: "Success"});
   }
 });
 
@@ -50,7 +50,7 @@ app.get("/vocaData", (req, res) => {
 // Get : Google Sheets vocaData
 app.get("/sheetData", async (req, res) => {
   const client = await auth.getClient();
-  const sheets = google.sheets({ version: "v4", auth: client });
+  const sheets = google.sheets({version: "v4", auth: client});
   try {
     const response = await sheets.spreadsheets.values.get({
       spreadsheetId: "1b3az54K2-P1BEB0IVdQ4Ces9a3NHsrlKqtxzeJuJnU0",
@@ -59,6 +59,25 @@ app.get("/sheetData", async (req, res) => {
     res.send(response.data);
   } catch (error) {
     res.status(500).send(error);
+  }
+});
+
+// PUT => need to check
+app.put("/update", (req, res) => {
+  const {spanish, korean} = req.body;
+  const vocaData = JSON.parse(fs.readFileSync(vocaDataFile));
+  const isExist = vocaData.find((voca) => voca.spanish === spanish);
+
+  if (isExist) {
+    vocaData.forEach((voca) => {
+      if (voca.spanish === spanish) {
+        voca.korean = korean;
+      }
+    });
+    fs.writeFileSync(vocaDataFile, JSON.stringify(vocaData));
+    res.status(200).send({message: "Success"});
+  } else {
+    res.status(404).send({message: "Not Found"});
   }
 });
 
