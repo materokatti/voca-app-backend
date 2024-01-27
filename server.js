@@ -62,25 +62,6 @@ app.get("/sheetData", async (req, res) => {
   }
 });
 
-// PUT => need to check
-app.put("/update", (req, res) => {
-  const {spanish, korean} = req.body;
-  const vocaData = JSON.parse(fs.readFileSync(vocaDataFile));
-  const isExist = vocaData.find((voca) => voca.spanish === spanish);
-
-  if (isExist) {
-    vocaData.forEach((voca) => {
-      if (voca.spanish === spanish) {
-        voca.korean = korean;
-      }
-    });
-    fs.writeFileSync(vocaDataFile, JSON.stringify(vocaData));
-    res.status(200).send({message: "Success"});
-  } else {
-    res.status(404).send({message: "Not Found"});
-  }
-});
-
 app.use((req, res) => {
   res.status(404).sendFile(path.join(__dirname, "client", "404.html"));
 });
